@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin</title>
+</head>
+<body>
+    <h1>Bienvenido Admin, {{ usuario }}</h1>
+    <h2>Lista de Empleados</h2>
+    
+    <a href="{{ url_for('agregar_empleado') }}"><button>+ Agregar Empleado</button></a>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Orden</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>CUIL</th>
+            <th>Situación</th>
+            <th>N° Cuenta</th>
+            <th>Acciones</th>
+        </tr>
+        {% for emp in empleados %}
+<tr>
+    <td>{{ emp.Orden }}</td>
+    <td>{{ emp.Apellido }}</td>
+    <td>{{ emp.Nombre }}</td>
+    <td>{{ emp.DNI }}</td>
+    <td>{{ emp.CUIL }}</td>
+    <td>{{ emp.Situacion }}</td>
+    <td>{{ emp.Numero_cuenta }}</td>
+    <td>
+        <a href="{{ url_for('editar_empleado', orden=emp.Orden) }}">Editar</a> |
+        <a href="{{ url_for('eliminar_empleado', orden=emp.Orden) }}" onclick="return confirm('¿Seguro que deseas dar de baja a este empleado?')">Dar de baja</a>
+    </td>
+    
+</tr>
+{% endfor %}
+
+    </table>
+    

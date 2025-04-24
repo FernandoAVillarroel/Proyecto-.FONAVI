@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Empleado</title>
+</head>
+<body>
+    <h1>Agregar Nuevo Empleado</h1>
+    <form action="/agregar-empleado" method="POST">
+        <label>Apellido: <input type="text" name="apellido" required></label><br>
+        <label>Nombre: <input type="text" name="nombre" required></label><br>
+        <label>DNI: <input type="text" name="dni" required></label><br>
+        <label>CUIL: <input type="text" name="cuil" required></label><br>
+        <label>Situación (P/C): <input type="text" name="situacion" required></label><br>
+        <label>Número de Cuenta: <input type="text" name="cuenta" required></label><br>
+        <label>ID Oficina: <input type="text" name="oficina" required></label><br>
+        <label>ID Usuario: <input type="text" name="id_usuario" required></label><br><br>
+        <button type="submit">Guardar Empleado</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('admin_panel') }}">Volver al Panel</a>
+</body>
+</html>

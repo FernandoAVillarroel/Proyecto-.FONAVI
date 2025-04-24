@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Empleado</title>
+</head>
+<body>
+    <h1>Editar datos de {{ empleado.Nombre }} {{ empleado.Apellido }}</h1>
+    <form method="post">
+        <input name="apellido" value="{{ empleado.Apellido }}" required><br>
+        <input name="nombre" value="{{ empleado.Nombre }}" required><br>
+        <input name="dni" value="{{ empleado.DNI }}" required><br>
+        <input name="cuil" value="{{ empleado.CUIL }}" required><br>
+        <input name="situacion" value="{{ empleado.Situacion }}" required><br>
+        <input name="cuenta" value="{{ empleado.Numero_cuenta }}" required><br>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    <a href="{{ url_for('admin_panel') }}">Volver</a>
+</body>
+</html>
