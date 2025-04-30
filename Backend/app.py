@@ -48,11 +48,35 @@ def admin_panel():
         return "Acceso no autorizado", 403
 
     cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Empleado")
+    query = """
+    SELECT 
+        e.Orden, 
+        e.Apellido, 
+        e.Nombre, 
+        e.DNI, 
+        e.CUIL, 
+        e.Situacion,
+        e.Numero_cuenta,
+        o.Nombre AS Oficina,
+        d.Fecha_ingreso, 
+        d.Antiguedad,
+        d.Funcion, 
+        d.Titulo, 
+        t.Porcentaje AS Porcentaje_titulo,
+        c.Nivel_basico
+    FROM Empleado e
+    JOIN Oficina o ON e.Oficina = o.Id_oficina
+    JOIN Detalles d ON e.Orden = d.Orden
+    JOIN Titulos t ON d.Titulo = t.Nombre
+    JOIN Categorias c ON d.Funcion = c.Nombre
+    ORDER BY e.Orden ASC
+    """
+    cursor.execute(query)
     empleados = cursor.fetchall()
     cursor.close()
 
     return render_template("admin.html", usuario=session.get("usuario"), empleados=empleados)
+
 
 
 @app.route('/empleado')
@@ -129,6 +153,105 @@ def editar_empleado(orden):
     cursor.close()
 
     return render_template("editar_empleado.html", empleado=empleado)
+
+
+@app.route('/oficinas')
+def listar_oficinas():
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Oficina")
+    oficinas = cursor.fetchall()
+    cursor.close()
+
+    return render_template("oficinas.html", usuario=session.get("usuario"), oficinas=oficinas)
+
+# Mostrar formulario para nueva oficina
+@app.route('/oficina/nueva')
+def nueva_oficina():
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+    return render_template("nueva_oficina.html")
+
+# Guardar nueva oficina en la BD
+@app.route('/oficina/guardar', methods=['POST'])
+def guardar_oficina():
+    nombre = request.form.get('nombre')
+
+    cursor = db.cursor()
+    query = "INSERT INTO Oficina (Nombre) VALUES (%s)"
+    cursor.execute(query, (nombre,))
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for('oficina_panel'))
+
+@app.route('/alta_oficina', methods=['GET', 'POST'])
+def alta_oficina():
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+
+    if request.method == 'POST':
+        nombre = request.form.get('nombre')
+
+        cursor = db.cursor()
+        query = "INSERT INTO Oficina (Nombre) VALUES (%s)"
+        cursor.execute(query, (nombre,))
+        db.commit()
+        cursor.close()
+
+        return redirect(url_for('abm_oficina'))
+
+    return render_template('alta_oficina.html')
+
+@app.route('/abm_oficina')
+def abm_oficina():
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Oficina")
+    oficinas = cursor.fetchall()
+    cursor.close()
+
+    return render_template("abm_oficina.html", oficinas=oficinas)
+
+
+
+@app.route('/editar_oficina/<int:id>', methods=['GET', 'POST'])
+def editar_oficina(id):
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+
+    cursor = db.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        nuevo_nombre = request.form.get('nombre')
+        query = "UPDATE Oficina SET Nombre = %s WHERE Id_oficina = %s"
+        cursor.execute(query, (nuevo_nombre, id))
+        db.commit()
+        cursor.close()
+        return redirect(url_for('abm_oficina'))
+    else:
+        query = "SELECT * FROM Oficina WHERE Id_oficina = %s"
+        cursor.execute(query, (id,))
+        oficina = cursor.fetchone()
+        cursor.close()
+        return render_template('editar_oficina.html', oficina=oficina)
+
+
+@app.route('/eliminar_oficina/<int:id>')
+def eliminar_oficina(id):
+    if session.get("tipo") != "Admin":
+        return "Acceso no autorizado", 403
+
+    cursor = db.cursor()
+    query = "DELETE FROM Oficina WHERE Id_oficina = %s"
+    cursor.execute(query, (id,))
+    db.commit()
+    cursor.close()
+    return redirect(url_for('abm_oficina'))
 
 
 if __name__ == '__main__':

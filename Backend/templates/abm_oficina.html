@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ABM Oficina</title>
+</head>
+<body>
+    <h1>Gestión de Oficinas</h1>
+
+    <!-- Botón para ir a alta oficina -->
+    <a href="{{ url_for('alta_oficina') }}">➕ Agregar Oficina</a>
+
+    <br><br>
+
+    <!-- Tabla de oficinas -->
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th> <!-- 🔥 Agregamos esta columna -->
+        </tr>
+        {% for oficina in oficinas %}
+        <tr>
+            <td>{{ oficina.Id_oficina }}</td>
+            <td>{{ oficina.Nombre }}</td>
+            <td>
+                <a href="{{ url_for('editar_oficina', id=oficina.Id_oficina) }}">Editar</a> |
+                <a href="{{ url_for('eliminar_oficina', id=oficina.Id_oficina) }}" onclick="return confirm('¿Seguro que deseas eliminar esta oficina?')">Dar de Baja</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <br>
+    <a href="{{ url_for('admin_panel') }}">⬅️ Volver al Panel Admin</a>
+</body>
+</html>

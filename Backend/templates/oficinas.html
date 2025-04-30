@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Oficinas</title>
+</head>
+<body>
+    <h1>Administrar Oficinas</h1>
+    <a href="{{ url_for('admin_panel') }}">Volver al Panel</a>
+    <br><br>
+
+    <h2>Listado de Oficinas</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+        {% for oficina in oficinas %}
+        <tr>
+            <td>{{ oficina.Id_oficina }}</td>
+            <td>{{ oficina.Nombre }}</td>
+            <td>
+                <!-- Acá después pondremos Editar y Eliminar -->
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

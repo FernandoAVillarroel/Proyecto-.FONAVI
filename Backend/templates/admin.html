@@ -7,8 +7,12 @@
 <body>
     <h1>Bienvenido Admin, {{ usuario }}</h1>
     <h2>Lista de Empleados</h2>
+     <!-- Botón para ir al ABM de Oficinas -->
+     <a href="{{ url_for('abm_oficina') }}">🏢 Oficinas</a>
     
     <a href="{{ url_for('agregar_empleado') }}"><button>+ Agregar Empleado</button></a>
+
+   
 
     <table border="1" cellpadding="5">
         <tr>
@@ -19,23 +23,37 @@
             <th>CUIL</th>
             <th>Situación</th>
             <th>N° Cuenta</th>
-            <th>Acciones</th>
+            <th>Fecha Ingreso</th>
+            <th>Antigüedad</th>
+            <th>Función</th>
+            <th>Título</th>
+            <th>Porcentaje Título</th>
+            <th>Oficina</th>
+            <th>Nivel Básico</th>
+            <th>Acciones</th>            
         </tr>
         {% for emp in empleados %}
-<tr>
-    <td>{{ emp.Orden }}</td>
-    <td>{{ emp.Apellido }}</td>
-    <td>{{ emp.Nombre }}</td>
-    <td>{{ emp.DNI }}</td>
-    <td>{{ emp.CUIL }}</td>
-    <td>{{ emp.Situacion }}</td>
-    <td>{{ emp.Numero_cuenta }}</td>
-    <td>
-        <a href="{{ url_for('editar_empleado', orden=emp.Orden) }}">Editar</a> |
-        <a href="{{ url_for('eliminar_empleado', orden=emp.Orden) }}" onclick="return confirm('¿Seguro que deseas dar de baja a este empleado?')">Dar de baja</a>
-    </td>
+    <tr>
+        <td>{{ emp.Orden }}</td>
+        <td>{{ emp.Apellido }}</td>
+        <td>{{ emp.Nombre }}</td>
+        <td>{{ emp.DNI }}</td>
+        <td>{{ emp.CUIL }}</td>
+        <td>{{ emp.Situacion }}</td>
+        <td>{{ emp.Numero_cuenta }}</td>
+        <td>{{ emp.Fecha_ingreso }}</td>
+        <td>{{ emp.Antiguedad }}</td>
+        <td>{{ emp.Funcion }}</td>
+        <td>{{ emp.Titulo }}</td>
+        <td>{{ emp.Porcentaje_titulo }}</td>
+        <td>{{ emp.Oficina }}</td>
+        <td>{{ emp.Nivel_basico }}</td>
+        <td>
+            <a href="{{ url_for('editar_empleado', orden=emp.Orden) }}">Editar</a> |
+            <a href="{{ url_for('eliminar_empleado', orden=emp.Orden) }}" onclick="return confirm('¿Seguro que deseas dar de baja este empleado?')">Dar de baja</a>
+        </td>
+    </tr>
     
-</tr>
 {% endfor %}
 
     </table>
