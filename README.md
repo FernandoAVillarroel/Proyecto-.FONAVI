@@ -57,6 +57,8 @@ $env:FLASK_APP = "app.py"
 python -m flask run
 
 Abrí el navegador en: http://127.0.0.1:5000
+
+
 🛡️ Seguridad
 El archivo .env está en .gitignore y no debe subirse al repositorio.
 
